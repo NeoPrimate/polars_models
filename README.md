@@ -138,7 +138,7 @@ comparison = results.select([
 ])
 ```
 
-== Long Table
+### Long Table
 
 ```py
 df_models = pl.concat([
