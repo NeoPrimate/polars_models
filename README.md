@@ -72,7 +72,56 @@ results = model.fit()
 results.summary()
 ```
 
+---
 
+```py
+df.select(
+    pl.col("y").stats.glm(
+        [
+            pl.col("x1"),
+            pl.col("x2").pow(2),
+            pl.col("x3").fill_null(0),
+            pl.col("category").to_dummy(),
+        ],
+        family: "binomial"
+    )
+)
+```
+
+
+```py
+df.select([
+    pl.col("y").stats.ols([pl.col("x1")]).alias("simple_lm"),
+    pl.col("y").stats.ols([pl.col("x1"), pl.col("x2"), pl.col("x3")]).alias("complex_lm"),
+    pl.col("y").stats.lasso([pl.col("x1"), pl.col("x2")], alpha=0.1).alias("sparse_model")
+])
+```
+
+```py
+df.select(
+    pl.col("y").stats.ols(
+        [
+            pl.col("x1"),
+            pl.col("x2").log().alias("log_x2"),
+            (pl.col("x3") * pl.col("x4")).alias("interaction_term")
+        ]
+    )
+)
+```
+
+```py
+df.select(
+    pl.col("y").stats.glm(
+        [
+            pl.col("x1"),
+            pl.col("x2").pow(2),
+            pl.col("x3").fill_null(0),
+            pl.col("category").to_dummy(),
+        ],
+        family: "binomial"
+    ).report().alias("glm_report")
+).unnest("glm_report")
+```
 
 
 
