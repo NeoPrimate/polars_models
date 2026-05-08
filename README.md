@@ -123,5 +123,20 @@ df.select(
 ).unnest("glm_report")
 ```
 
+```py
+results = df.select([
+    pl.col("y").stats.ols(["x1"]).alias("lm"),
+    pl.col("y").stats.lasso(["x1", "x2"]).alias("lasso")
+])
+
+lm = results.select(pl.col("lm")).unnest("lm")
+lasso = results.select(pl.col("lasso")).unnest("lasso")
+
+comparison = results.select([
+    pl.col("lm").struct.field("r_squared").alias("lm_r2"),
+    pl.col("lasso").struct.field("r_squared").alias("lasso_r2"),
+])
+```
+
 
 
