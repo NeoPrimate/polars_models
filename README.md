@@ -54,9 +54,9 @@ results = model.fit()
 results.summary()
 ```
 
+## Time Series
 
-
-### Time Series (`ma`, `arma`, `arima`, `varimax`)
+### ARIMA (`ma`, `arma`, `arima`, `varimax`)
 
 ```py
 df = pl.DataFrame(...)
@@ -70,6 +70,23 @@ df = pl.DataFrame(...)
 model = df.varimax(pl.col("y") ~ pl.col("x_1"), order=(1, 1, 0))
 results = model.fit()
 results.summary()
+```
+
+### ETS
+
+```py
+# Auto
+# alpha, beta, phi, gamma
+# A, N, M, Ad, Md, Z
+
+# Fully Auto
+pl.col("x").stats.ets() # Defaults to "ZZZ" (Auto everything)
+
+# Specifying specific letters via tuple
+pl.col("x").stats.ets(model=("M", "Ad", "M"))
+
+# Specifying specific letters via tuple and alpha
+pl.col("x").stats.ets(model=("A", "A", "A"), alpha=0.5)
 ```
 
 ---
