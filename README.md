@@ -138,5 +138,13 @@ comparison = results.select([
 ])
 ```
 
+== Long Table
+
+```py
+df_models = pl.concat([
+    df.select(pl.col("y").stats.ols(["x1"]).alias("res")).unnest("res"),
+    df.select(pl.col("y").stats.lasso(["x1"]).alias("res")).unnest("res"),
+], how="vertical")
+```
 
 
